@@ -1,12 +1,16 @@
 import java.util.ArrayList;
+import java.sql.Timestamp;
+import java.sql.Timestamp;
 
 public class UserGroup implements User {
 	private String id = "";
 	private ArrayList<User> usersInGroup;
 	private ArrayList<User> groupsInGroup;
 	private static int groupCounter = 0;
+	private long timeStamp;
 
 	public UserGroup(String id) {
+		timeStamp = System.currentTimeMillis();
 		this.id = id;
 		usersInGroup = new ArrayList<User>();
 		groupsInGroup = new ArrayList<User>();
@@ -66,5 +70,11 @@ public class UserGroup implements User {
 	}
 
 	public void setUserPanel(ProfileViewPanel userViewPanel) {
+	}
+
+	@Override
+	public Timestamp getCreationTime() {
+		// TODO Auto-generated method stub
+		return new Timestamp(timeStamp);
 	}
 }

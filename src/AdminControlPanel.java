@@ -3,6 +3,7 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionListener;
+import java.sql.Timestamp;
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -29,6 +30,8 @@ public class AdminControlPanel extends JPanel {
 	private JButton userViewButton;
 	private JButton userTotalButton;
 	private JButton groupTotalButton;
+	private JButton userValidButton;
+	private JButton lastUpdatedUser;
 	private JLabel labelMessage;
 	private JTextField userID;
 	private JTextField groupID;
@@ -66,7 +69,7 @@ public class AdminControlPanel extends JPanel {
 
 		labelMessage = new JLabel("");
 		labelMessage.setForeground(Color.BLACK);
-		labelMessage.setBounds(425, 218, 316, 14);
+		labelMessage.setBounds(425, 210, 316, 14);
 		frame.getContentPane().add(labelMessage);
 
 		userID = new JTextField("");
@@ -112,6 +115,33 @@ public class AdminControlPanel extends JPanel {
 		userTotalButton = new JButton("Show Total User(s)");
 		userTotalButton.setFont(new Font("Calibri", Font.PLAIN, 12));
 		userTotalButton.setBounds(425, 332, 151, 40);
+
+		userValidButton = new JButton("ID Validation");
+		userValidButton.setFont(new Font("Calibri", Font.PLAIN, 12));
+		userValidButton.setBounds(425, 282, 316, 40);
+		frame.getContentPane().add(userValidButton);
+
+		lastUpdatedUser = new JButton("Last Updated User");
+		lastUpdatedUser.setFont(new Font("Calibri", Font.PLAIN, 12));
+		lastUpdatedUser.setBounds(425, 232, 316, 40);
+		frame.getContentPane().add(lastUpdatedUser);
+
+		// set button actions
+		lastUpdatedUser.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				labelMessage.setText(new Timestamp(findLastUpdate()).toString());
+			}
+		});
+		userValidButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e){
+				if(validateID()){
+					labelMessage.setText("All ID's are Unique");
+				}
+				else{
+					labelMessage.setText("ID's are not Unique");
+				}
+			}
+		});
 
 		addUserButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -165,6 +195,20 @@ public class AdminControlPanel extends JPanel {
 				labelMessage.setText(tdv.visit(total));
 			}
 		});
+	}
+
+	public long findLastUpdate(){
+		long time = 0;
+		for(int i = 0; i < userList.size(); i++){
+			if(((SingleUser) userList.get(i)).getUpdatedTimeLong() > time){
+				time = ((SingleUser) userList.get(i)).getUpdatedTimeLong();
+			}
+		}
+		return time;
+	}
+	//add user already does check, just adding button
+	public boolean validateID(){
+		return true;
 	}
 
 	public void addUsers() {

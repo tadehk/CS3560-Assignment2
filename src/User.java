@@ -1,4 +1,5 @@
 import java.util.List;
+import java.sql.Timestamp;
 
 public interface User {
 	public void addFollows(User u);
@@ -20,4 +21,6 @@ public interface User {
 	public String getId();
 
 	public String toString();
+	
+	public Timestamp getCreationTime();
 }
